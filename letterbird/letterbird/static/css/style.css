@@ -12,10 +12,10 @@ footer {
     width: 100%;
 }
 
-a {
-    text-decoration: none;
-    color: #2B2A2C;
-}
+/*a {*/
+/*    text-decoration: none;*/
+/*    color: #2B2A2C;*/
+/*}*/
 
 label {
     display: inline-block;

@@ -33,7 +33,7 @@
             <ul class="navbar-nav ms-auto">
                 {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">{{ user.username }}</a>
+                        <a class="nav-link" href="">{{ user.username }}</a>
                     </li>
                     <li class="nav-item">
                         <span class="nav-link">|</span>
@@ -104,7 +104,7 @@
                 <div class="card my-4">
                     <h5 class="card-header">Categories</h5>
                     <div class="card-body">
-                        <ul class="list-group">
+                        <ul class="list-group mt-3">
                             <a href="#" class="list-group-item list-group-item-action">A second link item</a>
                             <a href="#" class="list-group-item list-group-item-action">A second link item</a>
                             <a href="#" class="list-group-item list-group-item-action">A second link item</a>
@@ -118,8 +118,7 @@
                     <h5 class="card-header">Side Widget</h5>
                     <div class="card-body">
                         You can put anything you want inside of these side widgets. They are easy to use, and feature
-                        the
-                        new Bootstrap 4 card containers!
+                        the new Bootstrap 4 card containers!
                     </div>
                 </div>
             </div>
