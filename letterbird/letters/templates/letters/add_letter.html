@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} - написать{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <div class="col-md-8" id="add-letter">
+            <h1 class="my-4">Написать письмо</h1>
+            <div class="card mb-4">
+                <div class="card-header">Ваше сообщение</div>
+                <div class="card-body mt-3">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <p>
+                            <button type="submit" class="btn btn-primary float-end w-25">Отпрвить</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {% include 'inclusions/permissions.html' %}
+    {% endif %}
+{% endblock %}

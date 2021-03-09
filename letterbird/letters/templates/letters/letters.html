@@ -3,14 +3,28 @@
 {% block title %}{{ block.super }} - {{ title }}{% endblock %}
 
 {% block content %}
+    {% if request.user.is_authenticated %}
         <!-- Blog Entries Column -->
-        <div class="col-md-8">
+        <div class="col-md-8" id="letters">
             <h1 class="my-4">{% block category %}{{ title|capfirst }}{% endblock %}</h1>
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-{{ message.tags }}" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             <!-- Blog Post -->
             {% for letter in letters %}
                 <div class="card mb-4">
                     <div class="card-body">
-                        <p class="card-text mt-3">
+                        <p class="card-text mt-3" align="justify">
                             {{ letter.message }}
                         </p>
                     </div>
@@ -29,6 +43,8 @@
                 </li>
             </ul>
         </div>
-    </div>
+    {% else %}
+        {% include 'inclusions/permissions.html' %}
+    {% endif %}
 {% endblock %}
 

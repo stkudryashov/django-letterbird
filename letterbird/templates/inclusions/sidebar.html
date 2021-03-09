@@ -1,0 +1,59 @@
+<!-- Sidebar Widgets Column -->
+<div class="col-md-4">
+    {% if request.user.is_authenticated %}
+        <!-- Categories Widget -->
+        <div class="card my-4">
+            <h5 class="card-header">Письма</h5>
+            <div class="card-body">
+                <ul class="list-group mt-3">
+                    <a href="{% url 'saves' %}#letters" class="list-group-item list-group-item-action">Сохраненные письма</a>
+                    <a href="{% url 'recently' %}#letters" class="list-group-item list-group-item-action">Недавние письма</a>
+                    <a href="{% url 'my' %}#letters" class="list-group-item list-group-item-action">Мои письма</a>
+                </ul>
+            </div>
+        </div>
+        <div class="card my-4">
+            <h5 class="card-header">Действия</h5>
+            <div class="card-body">
+                <ul class="list-group mt-3">
+                    <a href="{% url 'add-letter' %}#add-letter" class="list-group-item list-group-item-action">Написать письмо</a>
+                    <a href="{% url 'get-letter' %}#get-letter" class="list-group-item list-group-item-action">Получить письмо</a>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Admin Widget -->
+    {% if request.user.is_superuser %}
+        <div class="card my-4">
+            <h5 class="card-header">Админка</h5>
+            <div class="card-body">
+                <ul class="list-group mt-3">
+                    <a href="" class="list-group-item list-group-item-action">Пользователи</a>
+                    <a href="" class="list-group-item list-group-item-action">Все сообщения</a>
+                    <a href="" class="list-group-item list-group-item-action">Возможный спам</a>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Start Widget -->
+    {% if not request.user.is_authenticated %}
+    <div class="card my-4">
+        <h5 class="card-header">Добро пожаловать</h5>
+        <div class="card-body mt-3" align="justify">
+            Для написания и получения случайных писем необходимо войти или создать учетную запись пользователя.
+            Сделать это можно по ссылке сверху в правой части сайта.
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Rules Widget -->
+    <div class="card my-4">
+        <h5 class="card-header">Следуй правилам</h5>
+        <div class="card-body mt-3" align="justify">
+            Ты же не хочешь никого обидеть? Соблюдай правила и уважай желание пользователей быть анонимными.
+            Если какое-либо письмо кажется тебе подозрительным, нажми на кнопку и отправь его администрации.
+        </div>
+    </div>
+</div>

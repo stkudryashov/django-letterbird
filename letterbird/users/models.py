@@ -13,6 +13,6 @@ class User(AbstractUser):
         Letter, blank=True, related_name='letter_saves', editable=False, verbose_name='сохраненные')
 
     class Meta:
-        verbose_name = 'автор'
-        verbose_name_plural = 'авторы'
+        verbose_name = 'пользователь'
+        verbose_name_plural = 'пользователи'
         ordering = ['-username']

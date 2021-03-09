@@ -10,6 +10,7 @@
 
 
     <title>{% block title %}letterbird{% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/bird.png' %}"/>
 
 
     <!-- Google Fonts -->
@@ -29,140 +30,22 @@
 
 
 <body>
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-color fixed-top">
-    <div class="container">
-        <div>
-            <img src="{% static 'img/bird.png' %}">
-        </div>
-        <div class="ml-3">
-
-            <a class="navbar-brand pr-5" href="{% url 'homepage' %}">letterbird</a>
-        </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto">
-                {% if request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="">{{ user.username }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">выйти</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">регистрация</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">войти</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-</nav>
-
+{% block navbar %}
+    {% include 'inclusions/navbar.html' %}
+{% endblock %}
 
 <!-- Page Content -->
 <div class="container">
     <div class="row">
-
-
         {% block sidebar %}
-        <!-- Sidebar Widgets Column -->
-        <div class="col-md-4">
-            {% if request.user.is_authenticated %}
-                <!-- Categories Widget -->
-                <div class="card my-4">
-                    <h5 class="card-header">Письма</h5>
-                    <div class="card-body">
-                        <ul class="list-group mt-3">
-                            <a href="{% url 'saves' %}" class="list-group-item list-group-item-action">Сохраненные письма</a>
-                            <a href="{% url 'recently' %}" class="list-group-item list-group-item-action">Недавние письма</a>
-                            <a href="{% url 'my' %}" class="list-group-item list-group-item-action">Мои сообщения</a>
-                        </ul>
-                    </div>
-                </div>
-            {% endif %}
-            <!-- Side Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Следуй правилам</h5>
-                <div class="card-body mt-3" align="justify">
-                    Ты же не хочешь никого обидеть? Соблюдай правила и уважай желание пользователей быть анонимными.
-                    Если какое-либо письмо кажется тебе подозрительным, нажми на кнопку и отправь его администрации.
-                </div>
-            </div>
-        </div>
+            {% include 'inclusions/sidebar.html' %}
         {% endblock %}
-
 
         {% block content %}
-            <!-- Blog Entries Column -->
-            <div class="col-md-8">
-                <h1 class="my-4">{% block category %}Категория{% endblock %}</h1>
-                <!-- Blog Post -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <p class="card-text mt-3">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam.
-                            Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!
-                        </p>
-                    </div>
-                    <div class="card-footer text-muted">
-                        Письмо от January 1, 2020 by username
-                    </div>
-                </div>
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <p class="card-text mt-3">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam.
-                            Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!
-                        </p>
-                    </div>
-                    <div class="card-footer text-muted">
-                        Письмо от January 1, 2020 by username
-                    </div>
-                </div>
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <p class="card-text mt-3">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam.
-                            Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!
-                        </p>
-                    </div>
-                    <div class="card-footer text-muted">
-                        Письмо от January 1, 2020 by username
-                    </div>
-                </div>
-                <!-- Pagination -->
-                <ul class="pagination justify-content-center mb-4">
-                    <li class="page-item">
-                        <a class="page-link" href="#">&larr; Older</a>
-                    </li>
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">Newer &rarr;</a>
-                    </li>
-                </ul>
-            </div>
+
         {% endblock %}
-
-
     </div>
 </div>
-
-
-<!-- Footer -->
-<footer class="py-3 bg-color">
-    <div class="container">
-        <p class="m-0 text-center text-white">copyright &copy; letterbird 2021</p>
-    </div>
-</footer>
 
 
 <!-- Popper and Bootstrap JS -->

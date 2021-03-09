@@ -1,1 +1,32 @@
 {% extends 'base.html' %}
+
+{% block content %}
+    <!-- Blog Entries Column -->
+    <div class="col-md-8">
+        <h1 class="my-4">{% block category %}О сервисе{% endblock %}</h1>
+        <!-- Blog Post -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <p class="card-text mt-3">Какой нибудь интересный текст о сервисе</p>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <p class="card-text mt-3">Правила сервиса:</p>
+                <ul>
+                    <li>Какое-то правило 1</li>
+                    <li>Какое-то правило 2</li>
+                    <li>Какое-то правило 3</li>
+                    <li>Какое-то правило 4</li>
+                    <li>Какое-то правило 5</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <p class="card-text mt-3">Бла бла бла бла </p>
+            </div>
+            <div class="card-footer text-muted">С уважением, всегда ваш stkudryashov</div>
+        </div>
+    </div>
+{% endblock %}
