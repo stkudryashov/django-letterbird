@@ -4,7 +4,6 @@
 
 {% block content %}
     <div class="col-md-4 py-4">
-
         {% if messages %}
             {% for message in messages %}
                 {% if message.tags == 'error' %}
@@ -18,7 +17,6 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
-
         <div class="card">
             <div class="card-header">
                 Регистрация
@@ -26,11 +24,10 @@
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form.as_table }}
                     <button type="submit" class="btn btn-primary float-end">Регистрация</button>
                 </form>
             </div>
         </div>
-
     </div>
 {% endblock %}

@@ -23,6 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = mystery.SECRET_KEY
 
+RECAPTCHA_PUBLIC_KEY = mystery.RECAPTCHA_PUBLIC_KEY
+RECAPTCHA_PRIVATE_KEY = mystery.RECAPTCHA_PRIVATE_KEY
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -40,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'letters.apps.LettersConfig',
+    'captcha',
 ]
 
 MIDDLEWARE = [
