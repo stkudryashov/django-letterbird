@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} - {{ title }}{% endblock %}
+
+{% block content %}
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+            <h1 class="my-4">{% block category %}{{ title|capfirst }}{% endblock %}</h1>
+            <!-- Blog Post -->
+            {% for letter in letters %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <p class="card-text mt-3">
+                            {{ letter.message }}
+                        </p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Письмо от {{ letter.datetime }} by {{ letter.author.username }}
+                    </div>
+                </div>
+            {% endfor %}
+            <!-- Pagination -->
+            <ul class="pagination justify-content-center mb-4">
+                <li class="page-item">
+                    <a class="page-link" href="#">&larr; Older</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Newer &rarr;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+

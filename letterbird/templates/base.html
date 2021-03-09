@@ -68,37 +68,40 @@
 
 <!-- Page Content -->
 <div class="container">
-    {% block content %}
-        <div class="row">
+    <div class="row">
 
-            <!-- Sidebar Widgets Column -->
-            <div class="col-md-4">
-                {% if request.user.is_authenticated %}
-                    <!-- Categories Widget -->
-                    <div class="card my-4">
-                        <h5 class="card-header">Categories</h5>
-                        <div class="card-body">
-                            <ul class="list-group mt-3">
-                                <a href="#" class="list-group-item list-group-item-action">Сохраненные письма</a>
-                                <a href="#" class="list-group-item list-group-item-action">Недавние просмотры</a>
-                                <a href="#" class="list-group-item list-group-item-action">Мои сообщения</a>
-                            </ul>
-                        </div>
-                    </div>
-                {% endif %}
-                <!-- Side Widget -->
+
+        {% block sidebar %}
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+            {% if request.user.is_authenticated %}
+                <!-- Categories Widget -->
                 <div class="card my-4">
-                    <h5 class="card-header">Следуй правилам</h5>
-                    <div class="card-body mt-3" align="justify">
-                        Ты же не хочешь никого обидеть? Соблюдай правила и уважай желание пользователей быть анонимными.
-                        Если какое-либо письмо кажется тебе подозрительным, нажми на кнопку и отправь его администрации.
+                    <h5 class="card-header">Письма</h5>
+                    <div class="card-body">
+                        <ul class="list-group mt-3">
+                            <a href="{% url 'saves' %}" class="list-group-item list-group-item-action">Сохраненные письма</a>
+                            <a href="{% url 'recently' %}" class="list-group-item list-group-item-action">Недавние письма</a>
+                            <a href="{% url 'my' %}" class="list-group-item list-group-item-action">Мои сообщения</a>
+                        </ul>
                     </div>
                 </div>
+            {% endif %}
+            <!-- Side Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Следуй правилам</h5>
+                <div class="card-body mt-3" align="justify">
+                    Ты же не хочешь никого обидеть? Соблюдай правила и уважай желание пользователей быть анонимными.
+                    Если какое-либо письмо кажется тебе подозрительным, нажми на кнопку и отправь его администрации.
+                </div>
             </div>
+        </div>
+        {% endblock %}
 
+
+        {% block content %}
             <!-- Blog Entries Column -->
             <div class="col-md-8">
-
                 <h1 class="my-4">{% block category %}Категория{% endblock %}</h1>
                 <!-- Blog Post -->
                 <div class="card mb-4">
@@ -137,7 +140,6 @@
                         Письмо от January 1, 2020 by username
                     </div>
                 </div>
-
                 <!-- Pagination -->
                 <ul class="pagination justify-content-center mb-4">
                     <li class="page-item">
@@ -148,10 +150,10 @@
                     </li>
                 </ul>
             </div>
+        {% endblock %}
 
 
-        </div>
-    {% endblock %}
+    </div>
 </div>
 
 
