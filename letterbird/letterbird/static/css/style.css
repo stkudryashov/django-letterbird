@@ -1,0 +1,26 @@
+/* My static CSS */
+
+body {
+    padding-top: 56px;
+    font-family: 'Exo 2', sans-serif;
+    color: #2B2A2C;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: #2B2A2C;
+}
+
+.bg-color {
+    background-color: #a29bfe;
+}
+
+.errorlist {
+    color: #d63031;
+}

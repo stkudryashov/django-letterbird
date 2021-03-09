@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} - вход{% endblock %}
+
+{% block content %}
+    <div class="col-md-4 py-4">
+
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-{{ message.tags }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <div class="card">
+            <div class="card-header">
+                Вход
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary float-end">Регистрация</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

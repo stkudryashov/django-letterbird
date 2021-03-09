@@ -1,7 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+
 from django.utils.translation import gettext_lazy as _
+
+from letters.models import Letter
 from .models import User
+
+
+class LetterInline(admin.StackedInline):
+    model = Letter
+    extra = 0
 
 
 class MyUserAdmin(UserAdmin):
@@ -9,16 +17,17 @@ class MyUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         (_('Personal info'), {'fields': ('email',)}),
-        ('Письма', {
+        ('Статистика', {
             'fields': ('views', 'saves'),
         }),
-        (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
-        }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        (_('Permissions'), {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions'),
+        }),
     )
-    filter_horizontal = ('views', 'saves', 'groups', 'user_permissions')
-    readonly_fields = ('views', 'saves')
+    inlines = [LetterInline]
+    filter_horizontal = ('views', 'saves', 'user_permissions')
+    readonly_fields = ('views', 'saves', 'last_login', 'date_joined', 'inlines')
 
 
 admin.site.register(User, MyUserAdmin)
