@@ -13,11 +13,11 @@ class Letter(models.Model):
 
     message = models.TextField(max_length=3000, verbose_name='письмо')
     datetime = models.DateTimeField(auto_now_add=True, verbose_name='дата')
-    views = models.IntegerField(default=0, editable=False, verbose_name='просмотров')
-    saves = models.IntegerField(default=0, editable=False, verbose_name='сохранений')
+    views = models.IntegerField(default=0, editable=True, verbose_name='просмотров')
+    saves = models.IntegerField(default=0, editable=True, verbose_name='сохранений')
 
     def __str__(self):
-        return f'author-{self.author.username}-id-{str(self.pk)}'
+        return f'{self.author.username}-id-{str(self.pk)}'
 
     class Meta:
         verbose_name = 'письмо'

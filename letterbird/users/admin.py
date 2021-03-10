@@ -27,7 +27,7 @@ class MyUserAdmin(UserAdmin):
     )
     inlines = [LetterInline]
     filter_horizontal = ('views', 'saves', 'user_permissions')
-    readonly_fields = ('views', 'saves', 'last_login', 'date_joined')
+    readonly_fields = ('last_login', 'date_joined')
 
 
 admin.site.register(User, MyUserAdmin)

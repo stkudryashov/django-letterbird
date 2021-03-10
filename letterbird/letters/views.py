@@ -3,6 +3,7 @@ from django.views.generic import ListView, CreateView
 from .models import Letter
 from .forms import LetterForm
 from django.contrib import messages
+from users.models import User
 
 
 from django.urls import reverse_lazy
@@ -26,7 +27,9 @@ class ShowSavesLetters(ShowLetters):
         return context
 
     def get_queryset(self):
-        return Letter.objects.all()
+        current_user = User.objects.get(pk=self.request.user.pk)
+        saves_letters = current_user.saves.all()
+        return saves_letters
 
 
 class ShowRecentlyLetters(ShowLetters):
@@ -36,7 +39,9 @@ class ShowRecentlyLetters(ShowLetters):
         return context
 
     def get_queryset(self):
-        return Letter.objects.all()
+        current_user = User.objects.get(pk=self.request.user.pk)
+        views_letters = current_user.views.all()
+        return views_letters
 
 
 class ShowMyLetters(ShowLetters):

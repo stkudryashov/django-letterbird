@@ -8,9 +8,9 @@ class User(AbstractUser):
     last_name = None
 
     views = models.ManyToManyField(
-        Letter, blank=True, related_name='letter_views', editable=False, verbose_name='недавние')
+        Letter, blank=True, related_name='letter_views', editable=True, verbose_name='недавние')
     saves = models.ManyToManyField(
-        Letter, blank=True, related_name='letter_saves', editable=False, verbose_name='сохраненные')
+        Letter, blank=True, related_name='letter_saves', editable=True, verbose_name='сохраненные')
 
     class Meta:
         verbose_name = 'пользователь'
