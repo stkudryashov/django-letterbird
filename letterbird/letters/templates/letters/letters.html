@@ -5,8 +5,9 @@
 {% block content %}
     {% if request.user.is_authenticated %}
         <!-- Blog Entries Column -->
-        <div class="col-md-8" id="letters">
-            <h1 class="my-4">{% block category %}{{ title|capfirst }}{% endblock %}</h1>
+        <div class="col-md-8">
+            <a id="nav" class="anchor"></a>
+            <a id="help"><h1 class="my-4">{% block category %}{{ title|capfirst }}{% endblock %}</h1></a>
             {% if messages %}
                 {% for message in messages %}
                     {% if message.tags == 'error' %}

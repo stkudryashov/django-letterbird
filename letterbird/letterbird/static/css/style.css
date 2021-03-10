@@ -17,6 +17,13 @@ a {
     text-decoration: none !important;
 }
 
+a.anchor {
+    display: block;
+    position: relative;
+    top: -60px;
+    visibility: hidden;
+}
+
 .navbar-brand {
     padding-top: .3125rem;
     padding-bottom: .3125rem;

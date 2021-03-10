@@ -4,8 +4,9 @@
 
 {% block content %}
     {% if request.user.is_authenticated %}
-        <div class="col-md-8" id="add-letter">
-            <h1 class="my-4">Написать письмо</h1>
+        <div class="col-md-8">
+            <a id="nav" class="anchor"></a>
+            <a id="help"><h1 class="my-4">Написать письмо</h1></a>
             <div class="card mb-4">
                 <div class="card-header">Ваше сообщение</div>
                 <div class="card-body mt-3">

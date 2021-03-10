@@ -6,9 +6,9 @@
             <h5 class="card-header">Письма</h5>
             <div class="card-body">
                 <ul class="list-group mt-3">
-                    <a href="{% url 'saves' %}#letters" class="list-group-item list-group-item-action">Сохраненные письма</a>
-                    <a href="{% url 'recently' %}#letters" class="list-group-item list-group-item-action">Недавние письма</a>
-                    <a href="{% url 'my' %}#letters" class="list-group-item list-group-item-action">Мои письма</a>
+                    <a href="{% url 'saves' %}#nav" class="list-group-item list-group-item-action">Сохраненные письма</a>
+                    <a href="{% url 'recently' %}#nav" class="list-group-item list-group-item-action">Недавние письма</a>
+                    <a href="{% url 'my' %}#nav" class="list-group-item list-group-item-action">Мои письма</a>
                 </ul>
             </div>
         </div>
@@ -16,8 +16,8 @@
             <h5 class="card-header">Действия</h5>
             <div class="card-body">
                 <ul class="list-group mt-3">
-                    <a href="{% url 'add-letter' %}#add-letter" class="list-group-item list-group-item-action">Написать письмо</a>
-                    <a href="{% url 'get-letter' %}#get-letter" class="list-group-item list-group-item-action">Получить письмо</a>
+                    <a href="{% url 'add-letter' %}#nav" class="list-group-item list-group-item-action">Написать письмо</a>
+                    <a href="{% url 'get-letter' %}#nav" class="list-group-item list-group-item-action">Получить письмо</a>
                 </ul>
             </div>
         </div>
@@ -29,8 +29,8 @@
             <h5 class="card-header">Админка</h5>
             <div class="card-body">
                 <ul class="list-group mt-3">
-                    <a href="{% url 'users' %}#letters" class="list-group-item list-group-item-action">Пользователи</a>
-                    <a href="{% url 'all' %}#letters" class="list-group-item list-group-item-action">Все сообщения</a>
+                    <a href="{% url 'users' %}#nav" class="list-group-item list-group-item-action">Пользователи</a>
+                    <a href="{% url 'all' %}#nav" class="list-group-item list-group-item-action">Все сообщения</a>
                     <a href="" class="list-group-item list-group-item-action">Возможный спам</a>
                 </ul>
             </div>
