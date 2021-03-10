@@ -1,4 +1,5 @@
 from django.views.generic import ListView, CreateView
+from django.http.response import HttpResponse
 from .models import Letter
 from .forms import LetterForm
 from django.contrib import messages
@@ -115,3 +116,17 @@ class ShowAllLetters(ShowLetters):
     def get_queryset(self):
         if self.request.user.is_superuser:
             return Letter.objects.all()
+
+
+def change_data(request):
+    current_user = User.objects.get(pk=request.user.pk)
+    letter_id = request.POST.get('letter_id')
+
+    status = request.POST.get('status')
+
+    if status == 'true':
+        current_user.saves.add(letter_id)
+    elif status == 'false':
+        current_user.saves.remove(letter_id)
+
+    return HttpResponse(status=200)

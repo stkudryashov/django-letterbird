@@ -30,8 +30,47 @@
                                 {{ letter.message }}
                             </p>
                         </div>
-                        <div class="card-footer text-muted">
-                            Письмо от {{ letter.datetime }} by {{ letter.author.username }}
+                        <div class="row mx-0 card-footer text-muted">
+                            <div class="col-10">{{ letter.author.username }} от {{ letter.datetime }}</div>
+                            <form class="col-2 form-check form-switch">
+                                {% csrf_token %}
+                                {% if letter in request.user.saves.all %}
+                                    {% if not assignment.status %}
+                                        <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                               checked
+                                               onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+
+                                    {% else %}
+                                        <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                               onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                    {% endif %}
+                                {% else %}
+                                    {% if assignment.status %}
+                                        <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                               checked
+                                               onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                    {% else %}
+                                        <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                               onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                    {% endif %}
+                                {% endif %}
+                            </form>
+                            <script>function assignmentFinish{{ letter.pk }}(element, assignment) {
+                                link = "{% url 'change_data' %}";
+                                $.ajax({
+                                    type: 'POST',
+                                    url: link,
+                                    data: {
+                                        status: element.checked,
+                                        assignmentID: assignment,
+                                        letter_id: {{ letter.pk }},
+                                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                                    },
+                                    success: function () {
+                                    }
+                                });
+                            }
+                            </script>
                         </div>
                     </div>
                 {% endfor %}

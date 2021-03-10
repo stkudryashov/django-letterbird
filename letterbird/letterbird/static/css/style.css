@@ -38,6 +38,11 @@ a.anchor {
     padding: 0 1rem 1rem;
 }
 
+.saves {
+    float: right !important;
+    margin-right: 0;
+}
+
 .bg-color {
     background-color: #a29bfe;
 }

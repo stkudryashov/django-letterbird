@@ -2,6 +2,7 @@
 
 {% block title %}{{ block.super }} - {{ title }}{% endblock %}
 
+{% load static %}
 {% block content %}
     {% if request.user.is_authenticated %}
         <!-- Blog Entries Column -->
@@ -23,16 +24,63 @@
             {% endif %}
             <!-- Blog Post -->
             {% if letter %}
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <p class="card-text mt-3" align="justify">
-                                {{ letter.message }}
-                            </p>
-                        </div>
-                        <div class="card-footer text-muted">
-                            Письмо от {{ letter.datetime }} by {{ letter.author.username }}
-                        </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <p class="card-text mt-3" align="justify">
+                            {{ letter.message }}
+                        </p>
                     </div>
+                    <div class="row mx-0 card-footer text-muted">
+                        <div class="col-10">{{ letter.author.username }} от {{ letter.datetime }}</div>
+                        <form class="col-2 form-check form-switch">
+                            {% csrf_token %}
+                            {% if letter in request.user.saves.all %}
+                                {% if not assignment.status %}
+                                    <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                           checked
+                                           onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+
+                                {% else %}
+                                    <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                           onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                {% endif %}
+                            {% else %}
+                                {% if assignment.status %}
+                                    <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                           checked
+                                           onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                {% else %}
+                                    <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                           onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                {% endif %}
+                            {% endif %}
+                        </form>
+                        <script>function assignmentFinish{{ letter.pk }}(element, assignment) {
+                            link = "{% url 'change_data' %}";
+                            $.ajax({
+                                type: 'POST',
+                                url: link,
+                                data: {
+                                    status: element.checked,
+                                    assignmentID: assignment,
+                                    letter_id: {{ letter.pk }},
+                                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                                },
+                                success: function () {
+                                }
+                            });
+                        }
+                        </script>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body mt-3">
+                        <form class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-outline-success w-25">Дальше</button>
+                            <button type="button" class="btn btn-outline-warning w-25">Это спам</button>
+                        </form>
+                    </div>
+                </div>
             {% else %}
                 <div class="card mb-4">
                     <div class="card-body">
@@ -42,15 +90,6 @@
                     </div>
                 </div>
             {% endif %}
-            <!-- Pagination -->
-            <ul class="pagination justify-content-center mb-4">
-                <li class="page-item">
-                    <a class="page-link" href="#">&larr; Older</a>
-                </li>
-                <li class="page-item disabled">
-                    <a class="page-link" href="#">Newer &rarr;</a>
-                </li>
-            </ul>
         </div>
     {% else %}
         {% include 'inclusions/permissions.html' %}

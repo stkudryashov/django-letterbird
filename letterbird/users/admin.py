@@ -25,7 +25,8 @@ class MyUserAdmin(UserAdmin):
             'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions'),
         }),
     )
-    #inlines = [LetterInline]
+
+    # inlines = [LetterInline]
     filter_horizontal = ('recently', 'saves', 'user_permissions')
     readonly_fields = ('last_login', 'date_joined')
 
