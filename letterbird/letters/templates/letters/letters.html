@@ -56,7 +56,7 @@
                                 {% endif %}
                             </form>
                             <script>function assignmentFinish{{ letter.pk }}(element, assignment) {
-                                link = "{% url 'change_data' %}";
+                                link = "{% url 'change_saves' %}";
                                 $.ajax({
                                     type: 'POST',
                                     url: link,

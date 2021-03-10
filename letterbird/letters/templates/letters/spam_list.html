@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} - {{ title }}{% endblock %}
+
+{% load static %}
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+            <a id="nav" class="anchor"></a>
+            <a id="help"><h1 class="my-4">{% block category %}{{ title|capfirst }}{% endblock %}</h1></a>
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-{{ message.tags }}" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            <!-- Blog Post -->
+            {% if letter %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <p class="card-text mt-3" align="justify">
+                            {{ letter.message }}
+                        </p>
+                    </div>
+                    <div class="row mx-0 card-footer text-muted">
+                        <div class="col-10">{{ letter.author.username }} от {{ letter.datetime }}</div>
+                        <form class="col-2 form-check form-switch">
+                            {% csrf_token %}
+                            {% if letter in request.user.saves.all %}
+                                {% if not assignment.status %}
+                                    <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                           checked
+                                           onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+
+                                {% else %}
+                                    <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                           onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                {% endif %}
+                            {% else %}
+                                {% if assignment.status %}
+                                    <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                           checked
+                                           onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                {% else %}
+                                    <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                           onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                {% endif %}
+                            {% endif %}
+                        </form>
+                        <script>function assignmentFinish{{ letter.pk }}(element, assignment) {
+                            link = "{% url 'change_data' %}";
+                            $.ajax({
+                                type: 'POST',
+                                url: link,
+                                data: {
+                                    status: element.checked,
+                                    assignmentID: assignment,
+                                    letter_id: {{ letter.pk }},
+                                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                                },
+                                success: function () {
+                                }
+                            });
+                        }
+                        </script>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body mt-3">
+                        <form class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-outline-success w-25">Не спам</button>
+                            <button type="button" class="btn btn-outline-danger w-25">Это спам</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <p class="card-text mt-3" align="justify">
+                            Пока что у вас тут пусто
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        {% include 'inclusions/permissions.html' %}
+    {% endif %}
+{% endblock %}

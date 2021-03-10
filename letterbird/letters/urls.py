@@ -11,6 +11,6 @@ urlpatterns = [
     path('action/get-letter/', GetLetter.as_view(), name='get-letter'),
     path('super/users/', ShowAllUsers.as_view(), name='users'),
     path('super/all/', ShowAllLetters.as_view(), name='all'),
-    path('super/spam/', ShowAllLetters.as_view(), name='spam'),
-    path('post/change/', change_data, name='change_data'),
+    path('super/spam/', ShowSpamLetters.as_view(), name='spam'),
+    path('post/change/', change_saves, name='change_saves'),
 ]

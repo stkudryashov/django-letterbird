@@ -89,6 +89,8 @@ class GetLetter(ShowLetters):
             if new_letters:
                 rand_letter_id = choice(new_letters)
                 rand_letter = Letter.objects.get(pk=rand_letter_id)
+                rand_letter.views += 1
+                rand_letter.save()
                 current_user.recently.add(rand_letter)
                 return rand_letter
 
@@ -107,6 +109,20 @@ class ShowAllUsers(ShowLetters):
             return User.objects.all()
 
 
+class ShowSpamLetters(ShowLetters):
+    template_name = 'letters/spam_list.html'
+    context_object_name = 'letters'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'спам'
+        return context
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return User.objects.all()
+
+
 class ShowAllLetters(ShowLetters):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -118,15 +134,28 @@ class ShowAllLetters(ShowLetters):
             return Letter.objects.all()
 
 
-def change_data(request):
+def change_saves(request):
     current_user = User.objects.get(pk=request.user.pk)
     letter_id = request.POST.get('letter_id')
+    letter = Letter.objects.get(pk=letter_id)
 
     status = request.POST.get('status')
 
     if status == 'true':
         current_user.saves.add(letter_id)
+        letter.saves += 1
     elif status == 'false':
         current_user.saves.remove(letter_id)
+        letter.saves -= 1
 
+    letter.save()
+
+    return HttpResponse(status=200)
+
+
+def add_spam_count(request):
+    letter_id = request.POST.get('letter_id')
+    letter = Letter.objects.get(pk=letter_id)
+    letter.spam += 1
+    letter.save()
     return HttpResponse(status=200)

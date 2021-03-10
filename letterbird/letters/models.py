@@ -16,6 +16,9 @@ class Letter(models.Model):
     views = models.IntegerField(default=0, editable=True, verbose_name='просмотров')
     saves = models.IntegerField(default=0, editable=True, verbose_name='сохранений')
 
+    spam = models.IntegerField(default=0, verbose_name='оценок спам')
+    is_spam = models.BooleanField(default=False, verbose_name='спам')
+
     def __str__(self):
         return f'{self.author.username}-id-{str(self.pk)}'
 
