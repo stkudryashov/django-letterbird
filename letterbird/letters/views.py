@@ -27,9 +27,10 @@ class ShowSavesLetters(ShowLetters):
         return context
 
     def get_queryset(self):
-        current_user = User.objects.get(pk=self.request.user.pk)
-        saves_letters = current_user.saves.all()
-        return saves_letters
+        if self.request.user.is_authenticated:
+            current_user = User.objects.get(pk=self.request.user.pk)
+            saves_letters = current_user.saves.all()
+            return saves_letters
 
 
 class ShowRecentlyLetters(ShowLetters):
@@ -39,9 +40,10 @@ class ShowRecentlyLetters(ShowLetters):
         return context
 
     def get_queryset(self):
-        current_user = User.objects.get(pk=self.request.user.pk)
-        views_letters = current_user.views.all()
-        return views_letters
+        if self.request.user.is_authenticated:
+            current_user = User.objects.get(pk=self.request.user.pk)
+            views_letters = current_user.views.all()
+            return views_letters
 
 
 class ShowMyLetters(ShowLetters):
@@ -51,7 +53,8 @@ class ShowMyLetters(ShowLetters):
         return context
 
     def get_queryset(self):
-        return Letter.objects.filter(author_id=self.request.user.pk)
+        if self.request.user.is_authenticated:
+            return Letter.objects.filter(author_id=self.request.user.pk)
 
 
 class CreateLetter(CreateView):
@@ -63,3 +66,27 @@ class CreateLetter(CreateView):
         form.instance.author = self.request.user
         messages.success(self.request, 'Письмо успешно отправлено')
         return super(CreateLetter, self).form_valid(form)
+
+
+class ShowAllUsers(ShowLetters):
+    template_name = 'letters/user_list.html'
+    context_object_name = 'users'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'пользователи'
+        return context
+
+    def get_queryset(self):
+        return User.objects.all()
+
+
+class ShowAllLetters(ShowLetters):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'все письма'
+        return context
+
+    def get_queryset(self):
+        return Letter.objects.all()
+

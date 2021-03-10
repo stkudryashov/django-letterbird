@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ block.super }} - {{ title }}{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <!-- Blog Entries Column -->
+        <div class="col-md-8" id="letters">
+            <h1 class="my-4">Пользователи</h1>
+            <!-- Blog Post -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">username</th>
+                            <th scope="col">дата регистрации</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.pk }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.date_joined }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Pagination -->
+            <ul class="pagination justify-content-center mb-4">
+                <li class="page-item">
+                    <a class="page-link" href="#">&larr; Older</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Newer &rarr;</a>
+                </li>
+            </ul>
+        </div>
+    {% else %}
+        {% include 'inclusions/permissions.html' %}
+    {% endif %}
+{% endblock %}
+

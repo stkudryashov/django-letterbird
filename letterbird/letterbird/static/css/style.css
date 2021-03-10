@@ -13,6 +13,10 @@ label {
     margin-bottom: 4px !important;
 }
 
+a {
+    text-decoration: none !important;
+}
+
 .navbar-brand {
     padding-top: .3125rem;
     padding-bottom: .3125rem;

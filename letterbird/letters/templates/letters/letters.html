@@ -21,18 +21,28 @@
                 {% endfor %}
             {% endif %}
             <!-- Blog Post -->
-            {% for letter in letters %}
+            {% if letters %}
+                {% for letter in letters %}
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <p class="card-text mt-3" align="justify">
+                                {{ letter.message }}
+                            </p>
+                        </div>
+                        <div class="card-footer text-muted">
+                            Письмо от {{ letter.datetime }} by {{ letter.author.username }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
                 <div class="card mb-4">
                     <div class="card-body">
                         <p class="card-text mt-3" align="justify">
-                            {{ letter.message }}
+                            Пока что у вас тут пусто
                         </p>
                     </div>
-                    <div class="card-footer text-muted">
-                        Письмо от {{ letter.datetime }} by {{ letter.author.username }}
-                    </div>
                 </div>
-            {% endfor %}
+            {% endif %}
             <!-- Pagination -->
             <ul class="pagination justify-content-center mb-4">
                 <li class="page-item">
