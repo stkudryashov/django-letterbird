@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView
 from .models import Letter
 from .forms import LetterForm
 from django.contrib import messages
 from users.models import User
+from random import choice
 
 
 from django.urls import reverse_lazy
@@ -42,8 +42,8 @@ class ShowRecentlyLetters(ShowLetters):
     def get_queryset(self):
         if self.request.user.is_authenticated:
             current_user = User.objects.get(pk=self.request.user.pk)
-            views_letters = current_user.views.all()
-            return views_letters
+            recently_letters = current_user.recently.all().order_by('-datetime')[:10]
+            return recently_letters
 
 
 class ShowMyLetters(ShowLetters):
@@ -68,6 +68,30 @@ class CreateLetter(CreateView):
         return super(CreateLetter, self).form_valid(form)
 
 
+class GetLetter(ShowLetters):
+    template_name = 'letters/get_letter.html'
+    context_object_name = 'letter'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'получить'
+        return context
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            current_user = User.objects.get(pk=self.request.user.pk)
+            old_letters = current_user.recently.values_list('pk', flat=True)
+            all_letters = Letter.objects.values_list('pk', flat=True)
+            new_letters = all_letters.exclude(pk__in=old_letters)
+            new_letters = new_letters.exclude(author_id=current_user.pk)
+
+            if new_letters:
+                rand_letter_id = choice(new_letters)
+                rand_letter = Letter.objects.get(pk=rand_letter_id)
+                current_user.recently.add(rand_letter)
+                return rand_letter
+
+
 class ShowAllUsers(ShowLetters):
     template_name = 'letters/user_list.html'
     context_object_name = 'users'
@@ -78,7 +102,8 @@ class ShowAllUsers(ShowLetters):
         return context
 
     def get_queryset(self):
-        return User.objects.all()
+        if self.request.user.is_superuser:
+            return User.objects.all()
 
 
 class ShowAllLetters(ShowLetters):
@@ -88,5 +113,5 @@ class ShowAllLetters(ShowLetters):
         return context
 
     def get_queryset(self):
-        return Letter.objects.all()
-
+        if self.request.user.is_superuser:
+            return Letter.objects.all()

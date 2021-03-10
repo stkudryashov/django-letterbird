@@ -7,8 +7,8 @@ class User(AbstractUser):
     first_name = None
     last_name = None
 
-    views = models.ManyToManyField(
-        Letter, blank=True, related_name='letter_views', editable=True, verbose_name='недавние')
+    recently = models.ManyToManyField(
+        Letter, blank=True, related_name='letter_views', editable=True, verbose_name='просмотренные')
     saves = models.ManyToManyField(
         Letter, blank=True, related_name='letter_saves', editable=True, verbose_name='сохраненные')
 
