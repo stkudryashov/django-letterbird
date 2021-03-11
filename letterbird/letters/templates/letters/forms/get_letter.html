@@ -9,19 +9,6 @@
         <div class="col-md-8">
             <a id="nav" class="anchor"></a>
             <a id="help"><h1 class="my-4">{% block category %}{{ title|capfirst }}{% endblock %}</h1></a>
-            {% if messages %}
-                {% for message in messages %}
-                    {% if message.tags == 'error' %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ message }}
-                        </div>
-                    {% else %}
-                        <div class="alert alert-{{ message.tags }}" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
             <!-- Blog Post -->
             {% if letter %}
                 <div class="card mb-4">
@@ -56,7 +43,7 @@
                             {% endif %}
                         </form>
                         <script>function assignmentFinish{{ letter.pk }}(element, assignment) {
-                            link = "{% url 'change_data' %}";
+                            link = "{% url 'change_bookmarks' %}";
                             $.ajax({
                                 type: 'POST',
                                 url: link,
@@ -75,10 +62,12 @@
                 </div>
                 <div class="card mb-4">
                     <div class="card-body mt-3">
-                        <form class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button type="button" class="btn btn-outline-success w-25">Дальше</button>
-                            <button type="button" class="btn btn-outline-warning w-25">Это спам</button>
-                        </form>
+                        <div>
+                            <a href="{% url 'send-spam' %}#nav">
+                                <button class="btn btn-outline-warning w-25 float-start">Это спам</button></a>
+                            <a href="{% url 'get-letter' 'new-letters' %}#nav">
+                                <button class="btn btn-outline-success w-25 float-end">Дальше</button></a>
+                        </div>
                     </div>
                 </div>
             {% else %}

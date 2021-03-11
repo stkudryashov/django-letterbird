@@ -21,10 +21,15 @@ class User(AbstractUser):
 
     recently = models.ManyToManyField(
         Letter, blank=True, related_name='letter_views', editable=True, verbose_name='просмотренные')
-    saves = models.ManyToManyField(
+    bookmarks = models.ManyToManyField(
         Letter, blank=True, related_name='letter_saves', editable=True, verbose_name='сохраненные')
+
+    current_letter = models.IntegerField(default=0, verbose_name='current_letter_id')
 
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
         ordering = ['-date_joined']
+
+    def get_letters_count(self):
+        return Letter.objects.filter(author_id=self.pk).count()

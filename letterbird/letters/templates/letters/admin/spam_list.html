@@ -4,24 +4,11 @@
 
 {% load static %}
 {% block content %}
-    {% if request.user.is_authenticated %}
+    {% if request.user.is_superuser %}
         <!-- Blog Entries Column -->
         <div class="col-md-8">
             <a id="nav" class="anchor"></a>
             <a id="help"><h1 class="my-4">{% block category %}{{ title|capfirst }}{% endblock %}</h1></a>
-            {% if messages %}
-                {% for message in messages %}
-                    {% if message.tags == 'error' %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ message }}
-                        </div>
-                    {% else %}
-                        <div class="alert alert-{{ message.tags }}" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
             <!-- Blog Post -->
             {% if letter %}
                 <div class="card mb-4">

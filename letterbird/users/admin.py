@@ -18,7 +18,7 @@ class MyUserAdmin(UserAdmin):
         (None, {'fields': ('username', 'password')}),
         (_('Personal info'), {'fields': ('email',)}),
         ('Статистика', {
-            'fields': ('recently', 'saves'),
+            'fields': ('recently', 'bookmarks', 'current_letter'),
         }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
         (_('Permissions'), {
@@ -27,7 +27,7 @@ class MyUserAdmin(UserAdmin):
     )
 
     # inlines = [LetterInline]
-    filter_horizontal = ('recently', 'saves', 'user_permissions')
+    filter_horizontal = ('recently', 'bookmarks', 'user_permissions')
     readonly_fields = ('last_login', 'date_joined')
 
 

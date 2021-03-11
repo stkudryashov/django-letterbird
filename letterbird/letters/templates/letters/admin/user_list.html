@@ -3,7 +3,7 @@
 {% block title %}{{ block.super }} - {{ title }}{% endblock %}
 
 {% block content %}
-    {% if request.user.is_authenticated %}
+    {% if request.user.is_superuser %}
         <!-- Blog Entries Column -->
         <div class="col-md-8" id="letters">
             <a id="nav" class="anchor"></a>
@@ -16,6 +16,9 @@
                         <tr>
                             <th scope="col">id</th>
                             <th scope="col">username</th>
+                            <th scope="col">отправил</th>
+                            <th scope="col">прочитал</th>
+                            <th scope="col">сохранил</th>
                             <th scope="col">дата регистрации</th>
                         </tr>
                         </thead>
@@ -24,6 +27,9 @@
                             <tr>
                                 <td>{{ user.pk }}</td>
                                 <td>{{ user.username }}</td>
+                                <td>{{ user.get_letters_count }}</td>
+                                <td>{{ user.recently.count }}</td>
+                                <td>{{ user.bookmarks.count }}</td>
                                 <td>{{ user.date_joined }}</td>
                             </tr>
                         {% endfor %}

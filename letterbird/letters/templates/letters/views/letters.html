@@ -8,19 +8,7 @@
         <div class="col-md-8">
             <a id="nav" class="anchor"></a>
             <a id="help"><h1 class="my-4">{% block category %}{{ title|capfirst }}{% endblock %}</h1></a>
-            {% if messages %}
-                {% for message in messages %}
-                    {% if message.tags == 'error' %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ message }}
-                        </div>
-                    {% else %}
-                        <div class="alert alert-{{ message.tags }}" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
+            {% include 'inclusions/messages.html' %}
             <!-- Blog Post -->
             {% if letters %}
                 {% for letter in letters %}
@@ -34,7 +22,7 @@
                             <div class="col-10">{{ letter.author.username }} от {{ letter.datetime }}</div>
                             <form class="col-2 form-check form-switch">
                                 {% csrf_token %}
-                                {% if letter in request.user.saves.all %}
+                                {% if letter in request.user.bookmarks.all %}
                                     {% if not assignment.status %}
                                         <input class="form-check-input saves" type="checkbox" id="CheckChecked"
                                                checked
@@ -56,7 +44,7 @@
                                 {% endif %}
                             </form>
                             <script>function assignmentFinish{{ letter.pk }}(element, assignment) {
-                                link = "{% url 'change_saves' %}";
+                                link = "{% url 'change_bookmarks' %}";
                                 $.ajax({
                                     type: 'POST',
                                     url: link,
@@ -97,4 +85,3 @@
         {% include 'inclusions/permissions.html' %}
     {% endif %}
 {% endblock %}
-
