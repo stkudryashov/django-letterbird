@@ -24,6 +24,8 @@ class ShowLetters(ListView):
 
 
 class ShowBookmarks(ShowLetters):
+    paginate_by = 10
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'сохраненные'
@@ -37,6 +39,8 @@ class ShowBookmarks(ShowLetters):
 
 
 class ShowRecently(ShowLetters):
+    paginate_by = 10
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'недавние'
@@ -50,6 +54,8 @@ class ShowRecently(ShowLetters):
 
 
 class ShowMy(ShowLetters):
+    paginate_by = 10
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'мои'
@@ -110,6 +116,8 @@ class ShowUsers(ShowLetters):
     template_name = 'letters/admin/user_list.html'
     context_object_name = 'users'
 
+    paginate_by = 20
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'пользователи'
@@ -136,6 +144,8 @@ class ShowSpam(ShowLetters):
 
 
 class ShowAll(ShowLetters):
+    paginate_by = 10
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'все письма'
