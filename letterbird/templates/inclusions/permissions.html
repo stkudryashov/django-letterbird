@@ -3,12 +3,20 @@
     <!-- Blog Post -->
     <div class="card mb-4">
         <div class="card-body">
-            <p class="card-text mt-3">Тут мог быть какой-нибудь контент</p>
-            <hr>
-            <p class="card-text mt-3">
-                <a href="{% url 'login' %}">Войдите</a> или
-                <a href="{% url 'register' %}">создайте</a> учетную запись
-            </p>
+            {% if not request.user.is_authenticated %}
+                <p class="card-text mt-3">Тут мог быть какой-нибудь контент</p>
+                <hr>
+                <p class="card-text mt-3">
+                    <a href="{% url 'login' %}">Войдите</a> или
+                    <a href="{% url 'register' %}">создайте</a> учетную запись
+                </p>
+            {% else %}
+                <p class="card-text mt-3">Это область предназначена для администрации</p>
+                <hr>
+                <p class="card-text mt-3">
+                    К сожалению у вас нет прав для ее просмотра
+                </p>
+            {% endif %}
         </div>
     </div>
 </div>

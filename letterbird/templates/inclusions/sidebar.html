@@ -24,7 +24,7 @@
     {% endif %}
 
     <!-- Admin Widget -->
-    {% if request.user.is_superuser %}
+    {% if request.user.is_staff %}
         <div class="card my-4">
             <h5 class="card-header">Админка</h5>
             <div class="card-body">

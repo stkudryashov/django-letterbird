@@ -27,9 +27,10 @@ class ShowBookmarks(ShowLetters):
     paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'сохраненные'
-        return context
+        if self.request.user.is_authenticated:
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'сохраненные'
+            return context
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -42,9 +43,10 @@ class ShowRecently(ShowLetters):
     paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'недавние'
-        return context
+        if self.request.user.is_authenticated:
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'недавние'
+            return context
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -57,9 +59,10 @@ class ShowMy(ShowLetters):
     paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'мои'
-        return context
+        if self.request.user.is_authenticated:
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'мои'
+            return context
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -82,14 +85,15 @@ class GetLetter(ShowLetters):
     context_object_name = 'letter'
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'получить'
-        return context
+        if self.request.user.is_authenticated:
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'получить'
+            return context
 
     def get_queryset(self):
-        current_user = User.objects.get(pk=self.request.user.pk)
+        if self.request.user.is_authenticated:
+            current_user = User.objects.get(pk=self.request.user.pk)
 
-        if current_user.is_authenticated:
             if current_user.current_letter == 0 or self.kwargs['value'] == 'new-letters':
                 old_letters = current_user.recently.values_list('pk', flat=True)
                 all_letters = Letter.objects.values_list('pk', flat=True)
@@ -119,13 +123,14 @@ class ShowUsers(ShowLetters):
     paginate_by = 20
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'пользователи'
-        context['letters'] = Letter.objects.all()
-        return context
+        if self.request.user.is_staff:
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'пользователи'
+            context['letters'] = Letter.objects.all()
+            return context
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
+        if self.request.user.is_staff:
             return User.objects.all()
 
 
@@ -134,12 +139,13 @@ class ShowSpam(ShowLetters):
     context_object_name = 'letters'
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'спам'
-        return context
+        if self.request.user.is_staff:
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'спам'
+            return context
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
+        if self.request.user.is_staff:
             return User.objects.all()
 
 
@@ -147,37 +153,44 @@ class ShowAll(ShowLetters):
     paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'все письма'
-        return context
+        if self.request.user.is_staff:
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'все письма'
+            return context
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
+        if self.request.user.is_staff:
             return Letter.objects.all()
 
 
 def change_bookmarks(request):
-    current_user = User.objects.get(pk=request.user.pk)
-    letter_id = request.POST.get('letter_id')
-    letter = Letter.objects.get(pk=letter_id)
+    if request.user.is_authenticated:
+        current_user = User.objects.get(pk=request.user.pk)
+        letter_id = request.POST.get('letter_id')
+        letter = Letter.objects.get(pk=letter_id)
 
-    status = request.POST.get('status')
-    if status == 'true':
-        current_user.bookmarks.add(letter_id)
-        letter.saves += 1
-    elif status == 'false':
-        current_user.bookmarks.remove(letter_id)
-        letter.saves -= 1
+        status = request.POST.get('status')
+        if status == 'true':
+            current_user.bookmarks.add(letter_id)
+            letter.saves += 1
+        elif status == 'false':
+            current_user.bookmarks.remove(letter_id)
+            letter.saves -= 1
 
-    letter.save()
-    return HttpResponse(status=200)
+        letter.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=401)
 
 
 def add_spam_count(request):
-    user = User.objects.get(pk=request.user.pk)
-    letter = Letter.objects.get(pk=user.current_letter)
-    letter.spam += 1
-    letter.save()
-    user.current_letter = 0
-    user.save()
-    return redirect('homepage')
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=request.user.pk)
+        letter = Letter.objects.get(pk=user.current_letter)
+        letter.spam += 1
+        letter.save()
+        user.current_letter = 0
+        user.save()
+        return redirect('homepage')
+    else:
+        return HttpResponse(status=401)

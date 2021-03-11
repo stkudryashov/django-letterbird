@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ block.super }} - {{ title }}{% endblock %}
+{% block title %}
+    {% if request.user.is_staff %}
+        {{ block.super }} - {{ title }}
+    {% else %}
+        {{ block.super }} - нет прав
+    {% endif %}
+{% endblock %}
 
 {% block content %}
-    {% if request.user.is_superuser %}
+    {% if request.user.is_staff %}
         <!-- Blog Entries Column -->
         <div class="col-md-8" id="letters">
             <a id="nav" class="anchor"></a>

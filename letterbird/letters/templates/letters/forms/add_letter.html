@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ block.super }} - написать{% endblock %}
+{% block title %}
+    {% if request.user.is_authenticated %}
+        {{ block.super }} - написать
+    {% else %}
+        {{ block.super }} - нет прав
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     {% if request.user.is_authenticated %}

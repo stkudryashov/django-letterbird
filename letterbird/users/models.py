@@ -24,7 +24,7 @@ class User(AbstractUser):
     bookmarks = models.ManyToManyField(
         Letter, blank=True, related_name='letter_saves', editable=True, verbose_name='сохраненные')
 
-    current_letter = models.IntegerField(default=0, verbose_name='current_letter_id')
+    current_letter = models.IntegerField(default=0, verbose_name='активное письмо')
 
     class Meta:
         verbose_name = 'пользователь'

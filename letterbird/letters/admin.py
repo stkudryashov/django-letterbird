@@ -3,7 +3,7 @@ from .models import Letter
 
 
 class LetterAdmin(admin.ModelAdmin):
-    list_display = ['id', '__str__', 'author', 'views', 'saves', 'spam', 'datetime']
+    list_display = ['id', '__str__', 'author', 'views', 'saves', 'spam', 'is_spam', 'datetime']
     list_display_links = ['id', '__str__']
 
 

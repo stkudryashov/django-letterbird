@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ block.super }} - {{ title }}{% endblock %}
+{% block title %}
+    {% if request.user.is_authenticated %}
+        {{ block.super }} - {{ title }}
+    {% else %}
+        {{ block.super }} - нет прав
+    {% endif %}
+{% endblock %}
 
 {% load static %}
 {% block content %}
@@ -66,7 +72,7 @@
                             <a href="{% url 'send-spam' %}#nav">
                                 <button class="btn btn-outline-warning w-25 float-start">Это спам</button></a>
                             <a href="{% url 'get-letter' 'new-letters' %}#nav">
-                                <button class="btn btn-outline-success w-25 float-end">Дальше</button></a>
+                                <button class="btn btn-outline-success w-25 float-end" onclick="window.location.reload()">Дальше</button></a>
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,7 @@ urlpatterns = [
 
     path('letters/bookmarks/', ShowBookmarks.as_view(), name='bookmarks'),
     path('letters/recently/', ShowRecently.as_view(), name='recently'),
-    path('letters/my/', ShowMy.as_view(), name='my'),
+    path('letters/sent/', ShowMy.as_view(), name='my'),
 
     path('add-letter/', CreateLetter.as_view(), name='add-letter'),
     path('get-letter/<str:value>', GetLetter.as_view(), name='get-letter'),
