@@ -21,4 +21,6 @@ urlpatterns = [
     path('super/spam/id<int:letter_pk>-d<int:decide>', spam_decide, name='spam_decide'),
 
     path('post/change_bookmarks/', change_bookmarks, name='change_bookmarks'),
+
+    path('add-letter-check/', check_last, name='check_last'),
 ]

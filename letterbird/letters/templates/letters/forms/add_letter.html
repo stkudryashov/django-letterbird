@@ -10,22 +10,36 @@
 
 {% block content %}
     {% if request.user.is_authenticated %}
-        <div class="col-md-8">
-            <a id="nav" class="anchor"></a>
-            <a id="help"><h1 class="my-4">Написать письмо</h1></a>
-            <div class="card mb-4">
-                <div class="card-header">Ваше сообщение</div>
-                <div class="card-body mt-3">
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <p>
-                            <button type="submit" class="btn btn-primary float-end w-25">Отпрвить</button>
-                        </p>
-                    </form>
+        {% if request.user.can_write == 0 %}
+            <div class="col-md-8">
+                <h1 class="my-4">Не так быстро</h1>
+                <!-- Blog Post -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <p class="card-text mt-3">Вы не можете отправлять письма чаще, чем раз в 20 минут</p>
+                        <hr>
+                        <p class="card-text mt-3">Благодаря этому будет меньше спама без сути и смысла</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% else %}
+            <div class="col-md-8">
+                <a id="nav" class="anchor"></a>
+                <a id="help"><h1 class="my-4">Написать письмо</h1></a>
+                <div class="card mb-4">
+                    <div class="card-header">Ваше сообщение</div>
+                    <div class="card-body mt-3">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <p>
+                                <button type="submit" class="btn btn-primary float-end w-25">Отпрвить</button>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     {% else %}
         {% include 'inclusions/permissions.html' %}
     {% endif %}

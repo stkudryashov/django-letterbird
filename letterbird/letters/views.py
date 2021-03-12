@@ -11,6 +11,9 @@ from users.models import User
 from .forms import LetterForm
 from random import choice
 
+import datetime
+from django.utils.timezone import utc
+
 
 class IndexHtml(ListView):
     model = Letter
@@ -216,3 +219,18 @@ def spam_decide(request, letter_pk, decide):
         return redirect('spam')
     else:
         return HttpResponse(status=401)
+
+
+def check_last(request):
+    user = request.user
+    if user.is_authenticated:
+        last_letter = Letter.objects.filter(author_id=user.pk).first()
+        now_letter = datetime.datetime.now().replace(tzinfo=utc)
+        time_diff = now_letter - last_letter.datetime
+        if time_diff.total_seconds() < 1200:
+            user.can_write = False
+            user.save()
+        else:
+            user.can_write = True
+            user.save()
+    return redirect('add-letter')

@@ -30,46 +30,52 @@
                             </p>
                         </div>
                         <div class="row mx-0 card-footer text-muted">
-                            <div class="col-10">{{ letter.author.username }} от {{ letter.datetime }}</div>
-                            <form class="col-2 form-check form-switch">
-                                {% csrf_token %}
-                                {% if letter in request.user.bookmarks.all %}
-                                    {% if not assignment.status %}
-                                        <input class="form-check-input saves" type="checkbox" id="CheckChecked"
-                                               checked
-                                               onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                            {% if title == 'мои' %}
+                                <div class="col-12">от {{ letter.datetime }}
+                                    <b>&emsp;&emsp;👁 {{ letter.views }}&emsp;💾 {{ letter.saves }}</b>
+                                </div>
+                            {% else %}
+                                <div class="col-10">{{ letter.author.username }} от {{ letter.datetime }}</div>
+                                <form class="col-2 form-check form-switch">
+                                    {% csrf_token %}
+                                    {% if letter in request.user.bookmarks.all %}
+                                        {% if not assignment.status %}
+                                            <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                                   checked
+                                                   onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
 
+                                        {% else %}
+                                            <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                                   onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                        {% endif %}
                                     {% else %}
-                                        <input class="form-check-input saves" type="checkbox" id="CheckChecked"
-                                               onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                        {% if assignment.status %}
+                                            <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                                   checked
+                                                   onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                        {% else %}
+                                            <input class="form-check-input saves" type="checkbox" id="CheckChecked"
+                                                   onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
+                                        {% endif %}
                                     {% endif %}
-                                {% else %}
-                                    {% if assignment.status %}
-                                        <input class="form-check-input saves" type="checkbox" id="CheckChecked"
-                                               checked
-                                               onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
-                                    {% else %}
-                                        <input class="form-check-input saves" type="checkbox" id="CheckChecked"
-                                               onclick='assignmentFinish{{ letter.pk }}(this,"{{ assignment.id }}")'>
-                                    {% endif %}
-                                {% endif %}
-                            </form>
-                            <script>function assignmentFinish{{ letter.pk }}(element, assignment) {
-                                link = "{% url 'change_bookmarks' %}";
-                                $.ajax({
-                                    type: 'POST',
-                                    url: link,
-                                    data: {
-                                        status: element.checked,
-                                        assignmentID: assignment,
-                                        letter_id: {{ letter.pk }},
-                                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-                                    },
-                                    success: function () {
-                                    }
-                                });
-                            }
-                            </script>
+                                </form>
+                                <script>function assignmentFinish{{ letter.pk }}(element, assignment) {
+                                    link = "{% url 'change_bookmarks' %}";
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: link,
+                                        data: {
+                                            status: element.checked,
+                                            assignmentID: assignment,
+                                            letter_id: {{ letter.pk }},
+                                            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                                        },
+                                        success: function () {
+                                        }
+                                    });
+                                }
+                                </script>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

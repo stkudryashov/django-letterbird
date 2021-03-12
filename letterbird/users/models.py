@@ -25,6 +25,7 @@ class User(AbstractUser):
         Letter, blank=True, related_name='letter_saves', editable=True, verbose_name='сохраненные')
 
     current_letter = models.IntegerField(default=0, verbose_name='активное письмо')
+    can_write = models.BooleanField(default=True, verbose_name='может отправить')
 
     class Meta:
         verbose_name = 'пользователь'
