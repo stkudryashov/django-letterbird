@@ -15,6 +15,7 @@
         <div class="col-md-8">
             <a id="nav" class="anchor"></a>
             <a id="help"><h1 class="my-4">{% block category %}{{ title|capfirst }}{% endblock %}</h1></a>
+            {% include 'inclusions/messages.html' %}
             <!-- Blog Post -->
             {% if letter %}
                 <div class="card mb-4">

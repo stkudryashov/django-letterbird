@@ -18,5 +18,7 @@ urlpatterns = [
     path('super/letters/', ShowAll.as_view(), name='all'),
     path('super/spam/', ShowSpam.as_view(), name='spam'),
 
+    path('super/spam/id<int:letter_pk>-d<int:decide>', spam_decide, name='spam_decide'),
+
     path('post/change_bookmarks/', change_bookmarks, name='change_bookmarks'),
 ]

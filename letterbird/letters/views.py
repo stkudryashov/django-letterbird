@@ -96,7 +96,8 @@ class GetLetter(ShowLetters):
 
             if current_user.current_letter == 0 or self.kwargs['value'] == 'new-letters':
                 old_letters = current_user.recently.values_list('pk', flat=True)
-                all_letters = Letter.objects.values_list('pk', flat=True)
+                all_letters = Letter.objects.filter(is_spam=False)
+                all_letters = all_letters.values_list('pk', flat=True)
                 new_letters = all_letters.exclude(pk__in=old_letters)
                 new_letters = new_letters.exclude(author_id=current_user.pk)
 
@@ -126,7 +127,6 @@ class ShowUsers(ShowLetters):
         if self.request.user.is_staff:
             context = super().get_context_data(**kwargs)
             context['title'] = 'пользователи'
-            context['letters'] = Letter.objects.all()
             return context
 
     def get_queryset(self):
@@ -136,7 +136,7 @@ class ShowUsers(ShowLetters):
 
 class ShowSpam(ShowLetters):
     template_name = 'letters/admin/spam_list.html'
-    context_object_name = 'letters'
+    context_object_name = 'letter'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         if self.request.user.is_staff:
@@ -146,7 +146,9 @@ class ShowSpam(ShowLetters):
 
     def get_queryset(self):
         if self.request.user.is_staff:
-            return User.objects.all()
+            spam_letters = Letter.objects.filter(spam__gt=0).filter(is_spam=False)
+            spam_letters = spam_letters.order_by('-spam')
+            return spam_letters.first()
 
 
 class ShowAll(ShowLetters):
@@ -186,11 +188,31 @@ def change_bookmarks(request):
 def add_spam_count(request):
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.pk)
+
+        if user.current_letter == 0:
+            messages.error(request, 'Вы не можете этого сделать')
+            return redirect('get-letter', value='next')
+
         letter = Letter.objects.get(pk=user.current_letter)
         letter.spam += 1
         letter.save()
         user.current_letter = 0
         user.save()
-        return redirect('homepage')
+        messages.warning(request, 'Предыдущее сообщение отправлено на проверку')
+        return redirect('get-letter', value='next')
+    else:
+        return HttpResponse(status=401)
+
+
+def spam_decide(request, letter_pk, decide):
+    if request.user.is_staff:
+        letter = Letter.objects.get(pk=letter_pk)
+        if decide == 0:
+            letter.spam = 0
+            letter.save()
+        else:
+            letter.is_spam = True
+            letter.save()
+        return redirect('spam')
     else:
         return HttpResponse(status=401)

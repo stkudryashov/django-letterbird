@@ -15,6 +15,7 @@
         <div class="col-md-8">
             <a id="nav" class="anchor"></a>
             <a id="help"><h1 class="my-4">{% block category %}{{ title|capfirst }}{% endblock %}</h1></a>
+            {% include 'inclusions/messages.html' %}
             <!-- Blog Post -->
             {% if letter %}
                 <div class="card mb-4">
@@ -49,7 +50,7 @@
                             {% endif %}
                         </form>
                         <script>function assignmentFinish{{ letter.pk }}(element, assignment) {
-                            link = "{% url 'change_data' %}";
+                            link = "{% url 'change_bookmarks' %}";
                             $.ajax({
                                 type: 'POST',
                                 url: link,
@@ -68,10 +69,12 @@
                 </div>
                 <div class="card mb-4">
                     <div class="card-body mt-3">
-                        <form class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button type="button" class="btn btn-outline-success w-25">Не спам</button>
-                            <button type="button" class="btn btn-outline-danger w-25">Это спам</button>
-                        </form>
+                        <div>
+                            <a href="{% url 'spam_decide' letter.pk 1 %}#nav">
+                                <button class="btn btn-outline-warning w-25 float-start">Подтвердить</button></a>
+                            <a href="{% url 'spam_decide' letter.pk 0 %}#nav">
+                                <button class="btn btn-outline-success w-25 float-end">Отклонить</button></a>
+                        </div>
                     </div>
                 </div>
             {% else %}
