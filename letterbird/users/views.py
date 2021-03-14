@@ -12,7 +12,8 @@ def user_register(request):
         if request.method == 'POST':
             form = UserRegisterForm(request.POST)
             if form.is_valid():
-                form.save()
+                user = form.save()
+                login(request, user)
                 messages.success(request, 'Регистрация прошла успешно')
                 return redirect('login')
             else:
